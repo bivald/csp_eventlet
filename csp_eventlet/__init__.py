@@ -115,6 +115,11 @@ class Listener(object):
         return self._accept_channel.get()
     
     def _teardown(self, session):
+        if session._socket._protocol:
+            try:
+                session._socket._protocol.teardown() 
+            except AttributeError:
+                pass
         del self._sessions[session.key]
     
 def get_form(environ):
